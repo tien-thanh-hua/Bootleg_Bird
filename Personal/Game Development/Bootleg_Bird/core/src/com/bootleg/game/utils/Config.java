@@ -2,7 +2,7 @@ package com.bootleg.game.utils;
 
 import java.util.Random;
 
-public class config {
+public class Config {
     public static String soundJump = "jump";
     public static String soundScore = "score";
     public static String soundHit = "hit";

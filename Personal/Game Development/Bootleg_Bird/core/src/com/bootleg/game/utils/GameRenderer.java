@@ -25,12 +25,5 @@ public class GameRenderer {
         // draw black background
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // draw filled rectangle
-        _shapeRenderer.begin(ShapeType.Filled); // begin drawing filled shapes
-        _shapeRenderer.setColor(87 / 255.0f, 109 / 255.0f, 120 / 255.0f, 1); // choose color
-        _shapeRenderer.rect(_world.getRect().x, _world.getRect().y, _world.getRect().width,
-                _world.getRect().height); // from _world, draw rectangle (using ShapeType.Filled)
-        _shapeRenderer.end(); // finish render
     }
 }
