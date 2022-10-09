@@ -10,6 +10,7 @@ import com.bootleg.game.utils.InputHandler;
 public class GameScreen implements Screen {
     private GameWorld _world;
     private GameRenderer _renderer;
+    private float _runTime = 0;
 
     public GameScreen() {
         float screenWidth = Gdx.graphics.getWidth();
@@ -18,14 +19,15 @@ public class GameScreen implements Screen {
         float gameHeight = screenHeight / (screenWidth / gameWidth);
         int midPointY = (int) (gameHeight / 2);
         _world = new GameWorld(midPointY);
-        _renderer = new GameRenderer(_world);
+        _renderer = new GameRenderer(_world, (int) gameHeight, midPointY);
         Gdx.input.setInputProcessor(new InputHandler(_world.getBird()));
     }
 
     @Override
     public void render(float delta) {
+        _runTime += delta;
         _world.update(delta);
-        _renderer.render();
+        _renderer.render(_runTime);
     }
 
     @Override
