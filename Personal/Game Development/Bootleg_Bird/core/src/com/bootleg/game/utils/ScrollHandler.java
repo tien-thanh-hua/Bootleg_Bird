@@ -9,12 +9,14 @@ public class ScrollHandler {
     // ScrollHandler will create all five objects that we need.
     private Land _land1, _land2;
     private Pipe _pipe1, _pipe2, _pipe3;
+    private GameWorld _gameWorld;
 
     public static final float SCROLL_SPEED = -59;
     public static final float PIPE_GAP = Config.pipeGap;
 
     // tells where to create Land and Pipe objects
-    public ScrollHandler(float yPos) {
+    public ScrollHandler(GameWorld gameWorld, float yPos) {
+        this._gameWorld = gameWorld;
         _land1 = new Land(0, yPos, 143, 11, SCROLL_SPEED);
         _land2 = new Land(_land1.getTailX(), yPos, 143, 11, SCROLL_SPEED);
 
@@ -38,6 +40,10 @@ public class ScrollHandler {
     }
     public Pipe getPipe3() {
         return _pipe3;
+    }
+
+    private void addScore(int increment) {
+        _gameWorld.addScore(increment);
     }
 
     public void update(float delta) {
@@ -66,11 +72,33 @@ public class ScrollHandler {
     }
 
     public boolean collides(Bird bird) {
+
+        if (!_pipe1.isScored()
+                && _pipe1.getX() + (_pipe1.getWidth() / 2) < bird.getX()
+                + bird.getWidth()) {
+            addScore(1);
+            _pipe1.setScored(true);
+            AssetLoader.point.play();
+        } else if (!_pipe2.isScored()
+                && _pipe2.getX() + (_pipe2.getWidth() / 2) < bird.getX()
+                + bird.getWidth()) {
+            addScore(1);
+            _pipe2.setScored(true);
+            AssetLoader.point.play();
+
+        } else if (!_pipe3.isScored()
+                && _pipe3.getX() + (_pipe3.getWidth() / 2) < bird.getX()
+                + bird.getWidth()) {
+            addScore(1);
+            _pipe3.setScored(true);
+            AssetLoader.point.play();
+
+        }
         return (_pipe1.collides(bird) ||
-                (_pipe2.collides(bird)) ||
-                (_pipe3.collides(bird)) ||
-                (_land1.collides(bird) ||
-                (_land2.collides(bird))));
+                _pipe2.collides(bird) ||
+                _pipe3.collides(bird) ||
+                _land1.collides(bird) ||
+                _land2.collides(bird));
     }
 
     public void stop() {

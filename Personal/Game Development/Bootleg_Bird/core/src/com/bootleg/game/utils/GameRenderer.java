@@ -90,6 +90,11 @@ public class GameRenderer {
                 pipe.getHitRectDown().getWidth(), pipe.getHitRectDown().getHeight());
     }
 
+    private void drawCollisionBird(Bird bird) {
+        _shapeRenderer.circle(_bird.getHitCircle().x, _bird.getHitCircle().y,
+                _bird.getHitCircle().radius);
+    }
+
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
         _world = world;
 
@@ -110,14 +115,25 @@ public class GameRenderer {
         initAssets();
     }
 
+    private void drawCollision() {
+        _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        _shapeRenderer.setColor(0, 0, 255, 0.5f);
+        drawCollisionBird(_bird);
+        _shapeRenderer.setColor(255, 0, 0, 0.5f);
+        drawCollisionPipes(_pipe1);
+        drawCollisionPipes(_pipe2);
+        drawCollisionPipes(_pipe3);
+        _shapeRenderer.end();
+    }
+
     public void render(float runTime) {
         // draw background color
         Gdx.gl.glClearColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         _spriteBatch.begin();
 
-        // Disable transparency for performance when drawing opaque images
-        _spriteBatch.disableBlending();
+        // draw background
         _spriteBatch.draw(_bg, 0, -36, 136, 204, 0, 0, 272, 408, false, true);
 
         // draw land
@@ -125,8 +141,6 @@ public class GameRenderer {
         // draw pipes
         drawPipes();
 
-        // The bird needs transparency, so we enable that again.
-        _spriteBatch.enableBlending();
         // draw bird
         if (_bird.shouldntFlap()) {
             TextureRegion birdStill = new TextureRegion (_birdMid,
@@ -143,18 +157,18 @@ public class GameRenderer {
                     _bird.getHeight() / 2.0f, _bird.getWidth(), _bird.getHeight(),  1, -1,
                     _bird.getRotation());
         }
-        //
-        _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        _shapeRenderer.setColor(255,0,0,0.5f);
-        _shapeRenderer.circle(_bird.getHitCircle().x, _bird.getHitCircle().y,
-                _bird.getHitCircle().radius);
-        drawCollisionPipes(_pipe1);
-        drawCollisionPipes(_pipe2);
-        drawCollisionPipes(_pipe3);
-        _shapeRenderer.end();
 
-        // End SpriteBatch
+        // draw score
+        String score = _world.getScore() + "";
+        AssetLoader.shadow.draw(_spriteBatch, "" + _world.getScore(),
+                (136 / 2.0f) - (3 * score.length() - 1),
+                12);
+        AssetLoader.font.draw(_spriteBatch, "" + _world.getScore(),
+                (136 / 2.0f) - (3 * score.length()),11);
+
+        // draw collision for debugging purposes
+        // drawCollision();
+
         _spriteBatch.end();
     }
 }

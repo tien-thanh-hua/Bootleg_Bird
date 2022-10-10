@@ -15,6 +15,7 @@ public class Pipe extends Scrollable {
     private Rectangle _hitRectUp, _hitRectDown;
     public static final int VERTICAL_GAP = 45;
     private float _groundY;
+    private boolean _isScored = false;
 
     public Pipe(float x, float y, int width, int height, float scrollSpeed, float groundY) {
         super(x, y, width, height, scrollSpeed);
@@ -38,6 +39,7 @@ public class Pipe extends Scrollable {
         super.reset(newX);
         // Change the height to a random number
         _height = r.nextInt(90) + 15;
+        _isScored = false;
     }
 
     @Override
@@ -51,8 +53,15 @@ public class Pipe extends Scrollable {
     public Rectangle getHitRectUp() {
         return _hitRectUp;
     }
-
     public Rectangle getHitRectDown() {
         return _hitRectDown;
+    }
+
+    public boolean isScored() {
+        return _isScored;
+    }
+
+    public void setScored(boolean b) {
+        _isScored = b;
     }
 }

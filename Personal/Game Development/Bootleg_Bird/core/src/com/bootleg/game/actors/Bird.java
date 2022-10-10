@@ -2,6 +2,7 @@ package com.bootleg.game.actors;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.bootleg.game.utils.AssetLoader;
 
 public class Bird {
     private Vector2 _position;
@@ -11,6 +12,7 @@ public class Bird {
     private float _rotation; // for bird rotation
     private int _width;
     private int _height;
+    private boolean _isAlive;
 
     private Circle _hitCircle;
 
@@ -21,19 +23,28 @@ public class Bird {
         _velocity = new Vector2(0, 0);
         _acceleration = new Vector2(0, 460);
         _hitCircle = new Circle();
+        _isAlive = true;
     }
 
     public void update(float delta) {
+        // cap falling speed
         _velocity.add(_acceleration.cpy().scl(delta));
         if (_velocity.y > 200) {
             _velocity.y = 200;
         }
+
+        // ceiling cap
+        if (_position.y < 0) {
+            _position.y = 0;
+            _velocity.y = 0;
+        }
+
         _position.add(_velocity.cpy().scl(delta));
 
         _hitCircle.set(_position.x + 9, _position.y + 6, 6.5f);
 
         // clockwise rotation while falling down
-        if (isFalling()) {
+        if (isFalling() || !_isAlive) {
             _rotation += 480 * delta;
             if (_rotation > 90) {
                 _rotation = 90;
@@ -55,11 +66,23 @@ public class Bird {
     }
 
     public boolean shouldntFlap() {
-        return _velocity.y > 70;
+        return _velocity.y > 70 || !_isAlive;
     }
 
     public void onTap() {
-        _velocity.y = -140;
+        if(_isAlive) {
+            _velocity.y = -140;
+            AssetLoader.wing.play();
+        }
+    }
+
+    public void die() {
+        _isAlive = false;
+        _velocity.y = 0;
+    }
+
+    public void decelerate() {
+        _acceleration.y = 0;
     }
 
     public float getX() {
@@ -84,5 +107,9 @@ public class Bird {
 
     public Circle getHitCircle() {
         return _hitCircle;
+    }
+
+    public boolean isAlive() {
+        return _isAlive;
     }
 }
