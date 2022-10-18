@@ -18,28 +18,28 @@ public class AssetLoader {
     public static BitmapFont font, shadow;
 
     public static void load() {
-        bg = new Texture(Gdx.files.internal("flappy-bird-assets\\sprites\\background-day.png"));
+        bg = new Texture(Gdx.files.internal("sprites\\background-day.png"));
         bg.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        base = new Texture("flappy-bird-assets\\sprites\\base.png");
+        base = new Texture("sprites\\base.png");
         base.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        birdDown = new Texture("flappy-bird-assets\\sprites\\bluebird-downflap.png");
+        birdDown = new Texture("sprites\\bluebird-downflap.png");
         birdDown.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        birdMid = new Texture("flappy-bird-assets\\sprites\\bluebird-midflap.png");
+        birdMid = new Texture("sprites\\bluebird-midflap.png");
         birdMid.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        birdUp = new Texture("flappy-bird-assets\\sprites\\bluebird-upflap.png");
+        birdUp = new Texture("sprites\\bluebird-upflap.png");
         birdUp.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        pipe = new Texture("flappy-bird-assets\\sprites\\pipe-green.png");
+        pipe = new Texture("sprites\\pipe-green.png");
         pipe.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        ready = new Texture("flappy-bird-assets\\sprites\\message.png");
+        ready = new Texture("sprites\\message.png");
         ready.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        gameOver = new Texture("flappy-bird-assets\\sprites\\gameover.png");
+        gameOver = new Texture("sprites\\gameover.png");
         gameOver.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         Texture[] birds = { birdDown, birdMid, birdUp };
@@ -47,14 +47,14 @@ public class AssetLoader {
         birdAnimation = new Animation<Texture>(0.06f, birds);
         birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
-        hit = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\hit.ogg"));
-        die = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\die.ogg"));
-        point = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\point.ogg"));
-        wing = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\wing.ogg"));
+        hit = Gdx.audio.newSound(Gdx.files.internal("audio\\hit.ogg"));
+        die = Gdx.audio.newSound(Gdx.files.internal("audio\\die.ogg"));
+        point = Gdx.audio.newSound(Gdx.files.internal("audio\\point.ogg"));
+        wing = Gdx.audio.newSound(Gdx.files.internal("audio\\wing.ogg"));
 
-        font = new BitmapFont(Gdx.files.internal("flappy-bird-assets\\font\\text.fnt"));
+        font = new BitmapFont(Gdx.files.internal("font\\text.fnt"));
         font.getData().setScale(.25f, -.25f);
-        shadow = new BitmapFont(Gdx.files.internal("flappy-bird-assets\\font\\shadow.fnt"));
+        shadow = new BitmapFont(Gdx.files.internal("font\\shadow.fnt"));
         shadow.getData().setScale(.25f, -.25f);
     }
 
