@@ -14,15 +14,48 @@ public class Bird {
     private int _height;
     private boolean _isAlive;
 
-    private Circle _hitCircle;
+    // bird hurtbox
+    private Circle _hurtCircle;
 
+    // constructor
     public Bird(float x, float y, int width, int height) {
         _width = width;
         _height = height;
         _position = new Vector2(x, y);
         _velocity = new Vector2(0, 0);
         _acceleration = new Vector2(0, 460);
-        _hitCircle = new Circle();
+        _hurtCircle = new Circle();
+        _isAlive = true;
+    }
+
+    // getters
+    public float getX() {
+        return _position.x;
+    }
+    public float getY() {
+        return _position.y;
+    }
+    public float getRotation() {
+        return _rotation;
+    }
+    public int getWidth() {
+        return _width;
+    }
+    public int getHeight() {
+        return _height;
+    }
+    public Circle getHurtCircle() {
+        return _hurtCircle;
+    }
+
+    // reset variables upon restart
+    public void onRestart(int y) {
+        _rotation = 0;
+        _position.y = y;
+        _velocity.x = 0;
+        _velocity.y = 0;
+        _acceleration.x = 0;
+        _acceleration.y = 460;
         _isAlive = true;
     }
 
@@ -41,7 +74,7 @@ public class Bird {
 
         _position.add(_velocity.cpy().scl(delta));
 
-        _hitCircle.set(_position.x + 9, _position.y + 6, 6.5f);
+        _hurtCircle.set(_position.x + 9, _position.y + 6, 6.5f);
 
         // clockwise rotation while falling down
         if (isFalling() || !_isAlive) {
@@ -65,11 +98,12 @@ public class Bird {
         return _velocity.y > 110;
     }
 
-    public boolean shouldntFlap() {
+    public boolean shouldNotFlap() {
         return _velocity.y > 70 || !_isAlive;
     }
 
     public void onTap() {
+        // on tap, flies up and play flapping sound if alive
         if(_isAlive) {
             _velocity.y = -140;
             AssetLoader.wing.play();
@@ -77,36 +111,13 @@ public class Bird {
     }
 
     public void die() {
+        // disable flying upon death
         _isAlive = false;
         _velocity.y = 0;
     }
 
     public void decelerate() {
         _acceleration.y = 0;
-    }
-
-    public float getX() {
-        return _position.x;
-    }
-
-    public float getY() {
-        return _position.y;
-    }
-
-    public float getRotation() {
-        return _rotation;
-    }
-
-    public int getWidth() {
-        return _width;
-    }
-
-    public int getHeight() {
-        return _height;
-    }
-
-    public Circle getHitCircle() {
-        return _hitCircle;
     }
 
     public boolean isAlive() {

@@ -17,26 +17,22 @@ public abstract class Scrollable {
         isScrolledLeft = false;
     }
 
+    // getters
     public boolean isScrolledLeft() {
         return isScrolledLeft;
     }
-
     public float getTailX() {
         return _position.x + _width;
     }
-
     public float getX() {
         return _position.x;
     }
-
     public float getY() {
         return _position.y;
     }
-
     public int getWidth() {
         return _width;
     }
-
     public int getHeight() {
         return _height;
     }
@@ -44,7 +40,7 @@ public abstract class Scrollable {
     public void update(float delta) {
         _position.add(_velocity.cpy().scl(delta));
 
-        // If the Scrollable object is no longer visible:
+        // if the Scrollable object is no longer visible:
         if (_position.x + _width < 0) {
             isScrolledLeft = true;
         }
@@ -61,4 +57,6 @@ public abstract class Scrollable {
     }
 
     public abstract boolean collides(Bird bird);
+
+    public abstract void onRestart(float x, float scrollSpeed);
 }

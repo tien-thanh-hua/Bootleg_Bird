@@ -3,22 +3,24 @@ package com.bootleg.game.actors;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
-import sun.util.resources.cldr.ext.CurrencyNames_fr_HT;
-
 public class Land extends Scrollable {
 
-    private Rectangle _hitRect;
+    private Rectangle _hurtRect;
     // When Grass's constructor is invoked, invoke the super (Scrollable)
     // constructor
     public Land(float x, float y, int width, int height, float scrollSpeed) {
         super(x, y, width, height, scrollSpeed);
-        _hitRect = new Rectangle();
+        _hurtRect = new Rectangle();
+    }
+
+    public Rectangle getHurtRect() {
+        return _hurtRect;
     }
 
     @Override
     public boolean collides(Bird bird) {
         if (_position.x < bird.getX() + bird.getWidth()) {
-            return (Intersector.overlaps(bird.getHitCircle(), getHitRect()));
+            return (Intersector.overlaps(bird.getHurtCircle(), getHurtRect()));
         }
         return false;
     }
@@ -26,10 +28,12 @@ public class Land extends Scrollable {
     @Override
     public void update(float delta) {
         super.update(delta);
-        _hitRect.set(_position.x, _position.y, getWidth(),getHeight());
+        _hurtRect.set(_position.x, _position.y, getWidth(),getHeight());
     }
 
-    public Rectangle getHitRect() {
-        return _hitRect;
+    @Override
+    public void onRestart(float x, float scrollSpeed) {
+        _position.x = x;
+        _velocity.x = scrollSpeed;
     }
 }

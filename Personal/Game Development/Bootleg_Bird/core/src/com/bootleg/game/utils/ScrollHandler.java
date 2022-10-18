@@ -11,7 +11,9 @@ public class ScrollHandler {
     private Pipe _pipe1, _pipe2, _pipe3;
     private GameWorld _gameWorld;
 
-    public static final float SCROLL_SPEED = -59;
+    // takes negative value, the smaller it is the faster objects scroll
+    public static final float SCROLL_SPEED = Config.scrollSpeed;
+    // takes a positive value, determines the horizontal gap between pipes
     public static final float PIPE_GAP = Config.pipeGap;
 
     // tells where to create Land and Pipe objects
@@ -31,7 +33,6 @@ public class ScrollHandler {
     public Land getLand2() {
         return _land2;
     }
-
     public Pipe getPipe1() {
         return _pipe1;
     }
@@ -46,8 +47,22 @@ public class ScrollHandler {
         _gameWorld.addScore(increment);
     }
 
+    // only scroll Land, for use during READY game state
+    public void updateLand(float delta) {
+        // update objects
+        _land1.update(delta);
+        _land2.update(delta);
+
+        // if any piece of land is scrolled left, reset
+        if (_land1.isScrolledLeft()) {
+            _land1.reset(_land2.getTailX());
+        } else if (_land2.isScrolledLeft()) {
+            _land2.reset(_land1.getTailX());
+        }
+    }
+
     public void update(float delta) {
-        // Update our objects
+        // update objects
         _land1.update(delta);
         _land2.update(delta);
         _pipe1.update(delta);
@@ -72,13 +87,15 @@ public class ScrollHandler {
     }
 
     public boolean collides(Bird bird) {
-
+        // if pipe hasn't scored yet, increase score by 1 when bird touches the middle point of
+        // the pipe
         if (!_pipe1.isScored()
                 && _pipe1.getX() + (_pipe1.getWidth() / 2) < bird.getX()
                 + bird.getWidth()) {
             addScore(1);
             _pipe1.setScored(true);
             AssetLoader.point.play();
+
         } else if (!_pipe2.isScored()
                 && _pipe2.getX() + (_pipe2.getWidth() / 2) < bird.getX()
                 + bird.getWidth()) {
@@ -101,11 +118,20 @@ public class ScrollHandler {
                 _land2.collides(bird));
     }
 
+    // stop object scrolling
     public void stop() {
         _land1.stop();
         _land2.stop();
         _pipe1.stop();
         _pipe2.stop();
         _pipe3.stop();
+    }
+
+    public void onRestart() {
+        _land1.onRestart(0, SCROLL_SPEED);
+        _land2.onRestart(_land1.getTailX(), SCROLL_SPEED);
+        _pipe1.onRestart(210, SCROLL_SPEED);
+        _pipe2.onRestart(_pipe1.getTailX() + PIPE_GAP, SCROLL_SPEED);
+        _pipe3.onRestart(_pipe2.getTailX() + PIPE_GAP, SCROLL_SPEED);
     }
 }

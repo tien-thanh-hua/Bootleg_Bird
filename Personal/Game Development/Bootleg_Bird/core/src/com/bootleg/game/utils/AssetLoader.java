@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class AssetLoader {
-    public static Texture bg, base, birdMid, birdDown, birdUp, pipe;
-    public static Animation birdAnimation;
+    public static Texture bg, base, birdMid, birdDown, birdUp, pipe, ready, gameOver;
+    public static Animation<Texture> birdAnimation;
 
     public static Sound hit;
     public static Sound die;
@@ -33,12 +33,19 @@ public class AssetLoader {
         birdUp = new Texture("flappy-bird-assets\\sprites\\bluebird-upflap.png");
         birdUp.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        Texture[] birds = { birdDown, birdMid, birdUp };
-        birdAnimation = new Animation(0.06f, birds);
-        birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
-
         pipe = new Texture("flappy-bird-assets\\sprites\\pipe-green.png");
         pipe.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        ready = new Texture("flappy-bird-assets\\sprites\\message.png");
+        ready.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        gameOver = new Texture("flappy-bird-assets\\sprites\\gameover.png");
+        gameOver.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        Texture[] birds = { birdDown, birdMid, birdUp };
+        // create new animation from birds[] with frame duration of 0.06f
+        birdAnimation = new Animation<Texture>(0.06f, birds);
+        birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
         hit = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\hit.ogg"));
         die = Gdx.audio.newSound(Gdx.files.internal("flappy-bird-assets\\audio\\die.ogg"));
@@ -51,6 +58,7 @@ public class AssetLoader {
         shadow.getData().setScale(.25f, -.25f);
     }
 
+    // dispose assets when game closes
     public static void dispose() {
         bg.dispose();
         base.dispose();
