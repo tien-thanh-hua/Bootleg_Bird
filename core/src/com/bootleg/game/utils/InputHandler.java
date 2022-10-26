@@ -7,6 +7,8 @@ public class InputHandler implements InputProcessor {
     private Bird _bird;
     private GameWorld _world;
 
+    private int num_keydown = 0;
+
     public InputHandler(Bird bird) {
         _bird = bird;
     }
@@ -17,6 +19,11 @@ public class InputHandler implements InputProcessor {
         _bird = world.getBird();
     }
 
+    public void reset_keydown(){
+        System.out.println("!!! Game Over !!!");
+        this.num_keydown = 0;
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //  touch starts game if it's in READY state
@@ -24,12 +31,16 @@ public class InputHandler implements InputProcessor {
             _world.start();
         }
 
+        this.num_keydown ++;
+        System.out.println("Keydown: "+ this.num_keydown);
+
         // touch executes bird's onTap function during RUNNING state
         _bird.onTap();
 
         // touch restarts game if game is over
         if (_world.isGameOver()) {
             _world.restart();
+            reset_keydown();
         }
         return true;
     }

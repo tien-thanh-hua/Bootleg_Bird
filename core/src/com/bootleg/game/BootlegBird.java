@@ -9,7 +9,7 @@ public class BootlegBird extends Game {
 
 	@Override
 	public void create () {
-		Gdx.app.log("BootlegBird", "created");
+		Gdx.app.log("BootlegBird", "created by khengyun");
 		// load game assets
 		AssetLoader.load();
 		setScreen(new GameScreen());
