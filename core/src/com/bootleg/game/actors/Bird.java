@@ -29,6 +29,7 @@ public class Bird {
     }
 
     // getters
+
     public float getX() {
         return _position.x;
     }
